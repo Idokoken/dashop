@@ -1,0 +1,7 @@
+target/
+*.jar
+*.war
+*.log
+.git
+.gitignore
+.env

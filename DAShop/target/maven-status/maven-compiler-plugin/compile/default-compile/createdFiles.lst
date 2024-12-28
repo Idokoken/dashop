@@ -1,0 +1,17 @@
+ndgroups\DAShop\model\Category.class
+ndgroups\DAShop\model\Order.class
+ndgroups\DAShop\controller\ProductController.class
+ndgroups\DAShop\model\OrderItem.class
+ndgroups\DAShop\service\CategoryService.class
+ndgroups\DAShop\repository\ProductRepository.class
+ndgroups\DAShop\DaShopApplication.class
+ndgroups\DAShop\model\User.class
+ndgroups\DAShop\repository\CategoryRepository.class
+ndgroups\DAShop\service\ProductService.class
+ndgroups\DAShop\controller\IndexController.class
+ndgroups\DAShop\model\Address.class
+ndgroups\DAShop\controller\CategoryController.class
+ndgroups\DAShop\model\Review.class
+ndgroups\DAShop\model\Product.class
+ndgroups\DAShop\model\CartItem.class
+ndgroups\DAShop\model\Cart.class
