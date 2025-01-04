@@ -1,18 +1,21 @@
-package ndgroups.DAShop.service;
+package ndgroups.DAShop.service.impl;
 
-import ndgroups.DAShop.Interface.IProductService;
-import ndgroups.DAShop.exception.ProductNotFoundException;
+import ndgroups.DAShop.service.Interface.IProductService;
+import ndgroups.DAShop.dto.ImageDto;
+import ndgroups.DAShop.dto.ProductDto;
 import ndgroups.DAShop.exception.ResourceNotFoundException;
 import ndgroups.DAShop.model.Category;
+import ndgroups.DAShop.model.Image;
 import ndgroups.DAShop.model.Product;
 import ndgroups.DAShop.repository.CategoryRepository;
+import ndgroups.DAShop.repository.ImageRepository;
 import ndgroups.DAShop.repository.ProductRepository;
 import ndgroups.DAShop.request.AddProductRequest;
 import ndgroups.DAShop.request.UpdateProductRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +25,10 @@ public class ProductService implements IProductService {
       private ProductRepository productRepository;
       @Autowired
       private CategoryRepository categoryRepository;
-//      @Autowired
-//      private Cloudinary cloudinary;
+      @Autowired
+      private ImageRepository imageRepository;
+      @Autowired
+      private ModelMapper modelMapper;
       @Override
       public Product addProduct(AddProductRequest product){
             Category category = Optional.ofNullable(categoryRepository.findByName(product.getCategory().getName()))
@@ -105,6 +110,20 @@ public class ProductService implements IProductService {
       @Override
       public Long CountProductsByBrandAndName(String brand, String name) {
             return productRepository.countProductsByBrandAndName(brand, name);
+      }
+
+      @Override
+      public List<ProductDto>getConvertedProducts(List<Product> products){
+            return products.stream().map(this::convertToDto).toList();
+      }
+
+      @Override
+      public ProductDto convertToDto(Product product){
+          ProductDto productDto = modelMapper.map(product, ProductDto.class);
+           List<Image>images = imageRepository.findByProductProductId(product.getProductId());
+           List<ImageDto>imageDto = images.stream().map(image -> modelMapper.map(image, ImageDto.class)).toList();
+           productDto.setImages(imageDto);
+           return productDto;
       }
 
 

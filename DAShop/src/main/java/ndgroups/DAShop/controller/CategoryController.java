@@ -1,10 +1,9 @@
 package ndgroups.DAShop.controller;
 
-import ndgroups.DAShop.Interface.ICategoryService;
+import ndgroups.DAShop.service.Interface.ICategoryService;
 import ndgroups.DAShop.exception.AlreadyExistException;
 import ndgroups.DAShop.exception.ResourceNotFoundException;
 import ndgroups.DAShop.model.Category;
-import ndgroups.DAShop.model.Product;
 import ndgroups.DAShop.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

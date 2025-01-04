@@ -1,6 +1,6 @@
-package ndgroups.DAShop.service;
+package ndgroups.DAShop.service.impl;
 
-import ndgroups.DAShop.Interface.ICategoryService;
+import ndgroups.DAShop.service.Interface.ICategoryService;
 import ndgroups.DAShop.exception.AlreadyExistException;
 import ndgroups.DAShop.exception.ResourceNotFoundException;
 import ndgroups.DAShop.model.Category;

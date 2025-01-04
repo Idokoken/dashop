@@ -1,4 +1,4 @@
-package ndgroups.DAShop.Interface;
+package ndgroups.DAShop.service.Interface;
 
 import ndgroups.DAShop.dto.ImageDto;
 import ndgroups.DAShop.model.Image;

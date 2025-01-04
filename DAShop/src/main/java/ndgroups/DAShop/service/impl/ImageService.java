@@ -1,7 +1,7 @@
-package ndgroups.DAShop.service;
+package ndgroups.DAShop.service.impl;
 
-import ndgroups.DAShop.Interface.IImageService;
-import ndgroups.DAShop.Interface.IProductService;
+import ndgroups.DAShop.service.Interface.IImageService;
+import ndgroups.DAShop.service.Interface.IProductService;
 import ndgroups.DAShop.dto.ImageDto;
 import ndgroups.DAShop.exception.ResourceNotFoundException;
 import ndgroups.DAShop.model.Image;
@@ -50,7 +50,7 @@ public class ImageService implements IImageService {
               image.setImage(new SerialBlob(file.getBytes()));
               image.setProduct(product);
 
-              String buildDownload = "/vi/download/images/image/";
+              String buildDownload = "/api/v1/images/image/download/";
               String downloadUrl = buildDownload  + image.getId();
               image.setDownloadUrl(downloadUrl);
 

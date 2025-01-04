@@ -1,5 +1,6 @@
-package ndgroups.DAShop.Interface;
+package ndgroups.DAShop.service.Interface;
 
+import ndgroups.DAShop.dto.ProductDto;
 import ndgroups.DAShop.model.Product;
 import ndgroups.DAShop.request.AddProductRequest;
 import ndgroups.DAShop.request.UpdateProductRequest;
@@ -18,4 +19,8 @@ public interface IProductService {
     List<Product>getProductsByName(String name);
     List<Product>getProductsByBrandAndName(String brand, String name);
     Long CountProductsByBrandAndName(String brand, String name);
+
+    List<ProductDto>getConvertedProducts(List<Product> products);
+
+    ProductDto convertToDto(Product product);
 }

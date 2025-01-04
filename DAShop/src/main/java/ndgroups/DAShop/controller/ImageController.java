@@ -1,11 +1,10 @@
 package ndgroups.DAShop.controller;
 
-import ndgroups.DAShop.Interface.IImageService;
+import ndgroups.DAShop.service.Interface.IImageService;
 import ndgroups.DAShop.dto.ImageDto;
 import ndgroups.DAShop.exception.ResourceNotFoundException;
 import ndgroups.DAShop.model.Image;
 import ndgroups.DAShop.response.ApiResponse;
-import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
