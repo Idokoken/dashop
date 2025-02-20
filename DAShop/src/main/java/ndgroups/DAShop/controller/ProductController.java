@@ -1,5 +1,6 @@
 package ndgroups.DAShop.controller;
 
+import ndgroups.DAShop.exception.AlreadyExistException;
 import ndgroups.DAShop.service.Interface.ICategoryService;
 import ndgroups.DAShop.service.Interface.IProductService;
 import ndgroups.DAShop.dto.ProductDto;
@@ -11,12 +12,14 @@ import ndgroups.DAShop.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/products")
+//@CrossOrigin("*")
 public class ProductController {
 
     @Autowired
@@ -24,14 +27,15 @@ public class ProductController {
     @Autowired
     private ICategoryService categoryService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<ApiResponse> addProducts(@RequestBody AddProductRequest product) {
         try {
             Product newProduct =  productService.addProduct(product);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse("product added", newProduct));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        } catch (AlreadyExistException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(new ApiResponse(e.getMessage(), null));
         }
     }
@@ -46,6 +50,7 @@ public class ProductController {
                     .body(new ApiResponse(e.getMessage(), null));
         }
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse>updateProduct(@PathVariable Integer id,
                                                     @RequestBody UpdateProductRequest product){
@@ -58,6 +63,7 @@ public class ProductController {
                     .body(new ApiResponse(e.getMessage(), null));
         }
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Integer id) {
         try {

@@ -1,15 +1,18 @@
 package ndgroups.DAShop.controller;
 
+import io.jsonwebtoken.JwtException;
 import ndgroups.DAShop.exception.ResourceNotFoundException;
+import ndgroups.DAShop.model.Cart;
+import ndgroups.DAShop.model.User;
 import ndgroups.DAShop.response.ApiResponse;
 import ndgroups.DAShop.service.Interface.ICartItemService;
 import ndgroups.DAShop.service.Interface.ICartService;
+import ndgroups.DAShop.service.Interface.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("${api.prefix}/cartitems")
@@ -18,21 +21,25 @@ public class CartItemController {
     private ICartItemService cartItemService;
     @Autowired
     private ICartService cartService;
+    @Autowired
+    private IUserService userService;
 
 
     @PostMapping("/item/add")
-    public ResponseEntity<ApiResponse>addItemToCart(@RequestParam(required = false) Integer cartId,@RequestParam Integer productId,
+    public ResponseEntity<ApiResponse>addItemToCart(@RequestParam Integer productId,
                                                     @RequestParam Integer quantity) {
         try {
-            if (cartId == null) {
-                cartId = cartService.initializeNewCart();
-            }
+            User user = userService.getAuthenticatedUser();
+            Cart cart = cartService.initializeNewCart(user);
 
-            cartItemService.addItemToCart(cartId, productId, quantity);
+            cartItemService.addItemToCart(cart.getId(), productId, quantity);
             return ResponseEntity.ok(new ApiResponse("successful", null));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse(e.getMessage(), null));
+        }catch (JwtException e){
+           return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                   .body(new ApiResponse(e.getMessage(), null));
         }
     }
     @DeleteMapping("/item/remove/{cartId}/{productId}")

@@ -2,7 +2,6 @@ package ndgroups.DAShop.dto;
 
 import lombok.Data;
 import ndgroups.DAShop.model.Category;
-import ndgroups.DAShop.model.Image;
 
 import java.math.BigDecimal;
 import java.util.List;

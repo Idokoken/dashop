@@ -1,12 +1,15 @@
 package ndgroups.DAShop.service.Interface;
 
+import ndgroups.DAShop.dto.OrderDto;
 import ndgroups.DAShop.model.Order;
 
 import java.util.List;
 
 public interface IOrderService {
     Order placeOrder(Integer userId);
-    Order getOrder(Integer orderId);
+    OrderDto getOrder(Integer orderId);
 
-    List<Order> getUserOrders(Integer userId);
+    List<OrderDto> getUserOrders(Integer userId);
+
+    OrderDto convertToDto(Order order);
 }

@@ -1,5 +1,6 @@
 package ndgroups.DAShop.service.impl;
 
+import ndgroups.DAShop.exception.AlreadyExistException;
 import ndgroups.DAShop.service.Interface.IProductService;
 import ndgroups.DAShop.dto.ImageDto;
 import ndgroups.DAShop.dto.ProductDto;
@@ -31,6 +32,11 @@ public class ProductService implements IProductService {
       private ModelMapper modelMapper;
       @Override
       public Product addProduct(AddProductRequest product){
+          if(productExists(product.getName(), product.getBrand())){
+              throw new AlreadyExistException(product.getBrand() + " " + product.getName() + " already exist, " +
+                      "you may update the product instead!");
+          }
+
             Category category = Optional.ofNullable(categoryRepository.findByName(product.getCategory().getName()))
                     .orElseGet(() -> {
                           Category newCategory = new Category(product.getCategory().getName());
@@ -39,6 +45,10 @@ public class ProductService implements IProductService {
             product.setCategory(category);
             return productRepository.save(createProduct(product, category));
       }
+      private boolean productExists(String name, String brand){
+          return productRepository.existsByNameAndBrand(name, brand);
+      }
+
       private Product createProduct(AddProductRequest request, Category category){
             return new Product(request.getName(),
                     request.getDescription(),

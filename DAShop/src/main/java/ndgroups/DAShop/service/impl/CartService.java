@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import ndgroups.DAShop.exception.ResourceNotFoundException;
 import ndgroups.DAShop.model.Cart;
 import ndgroups.DAShop.model.CartItem;
+import ndgroups.DAShop.model.User;
 import ndgroups.DAShop.repository.CartItemRepository;
 import ndgroups.DAShop.repository.CartRepository;
 import ndgroups.DAShop.service.Interface.ICartService;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -48,15 +50,17 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Integer initializeNewCart(){
+    public Cart initializeNewCart(User user){
         Cart newCart = new Cart();
-        Integer newCartId = cartIdGenerator.incrementAndGet();
-        newCart.setId(newCartId);
-        return cartRepository.save(newCart).getId();
-
+        return Optional.ofNullable(getCartByUserId(user.getId()))
+                .orElseGet(() -> {
+                    Cart cart = new Cart();
+                    cart.setUser(user);
+                    return cartRepository.save(cart);
+                });
     }
     @Override
     public Cart getCartByUserId(Integer userId) {
-    return null;
+        return cartRepository.findByUserId(userId);
     }
 }

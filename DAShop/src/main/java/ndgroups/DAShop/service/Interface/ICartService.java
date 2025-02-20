@@ -1,6 +1,7 @@
 package ndgroups.DAShop.service.Interface;
 
 import ndgroups.DAShop.model.Cart;
+import ndgroups.DAShop.model.User;
 
 import java.math.BigDecimal;
 
@@ -9,7 +10,7 @@ public interface ICartService {
     void clearCart(Integer cartId);
     BigDecimal getTotalPrice(Integer id);
 
-    Integer initializeNewCart();
+    Cart initializeNewCart(User user);
 
     Cart getCartByUserId(Integer userId);
 }

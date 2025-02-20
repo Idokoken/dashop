@@ -1,5 +1,6 @@
 package ndgroups.DAShop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class OrderItem {
     private Integer orderItemId;
     private Integer quantity;
     private BigDecimal pricePerUnit;
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

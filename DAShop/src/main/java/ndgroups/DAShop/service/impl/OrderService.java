@@ -1,6 +1,8 @@
 package ndgroups.DAShop.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import ndgroups.DAShop.dto.OrderDto;
 import ndgroups.DAShop.enums.OrderStatus;
 import ndgroups.DAShop.exception.ResourceNotFoundException;
 import ndgroups.DAShop.model.Cart;
@@ -10,6 +12,7 @@ import ndgroups.DAShop.model.Product;
 import ndgroups.DAShop.repository.OrderRepository;
 import ndgroups.DAShop.repository.ProductRepository;
 import ndgroups.DAShop.service.Interface.IOrderService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +30,10 @@ public class OrderService implements IOrderService {
     private ProductRepository productRepository;
     @Autowired
     private CartService cartService;
+    private final ModelMapper modelMapper;
 
 
+    @Transactional
     @Override
     public Order placeOrder(Integer userId) {
         Cart cart = cartService.getCartByUserId(userId);
@@ -42,18 +47,21 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Order getOrder(Integer orderId) {
+    public OrderDto getOrder(Integer orderId) {
         return orderRepository.findById(orderId)
+                .map(this::convertToDto)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
     }
     @Override
-    public List<Order>getUserOrders(Integer userId){
-        return null;
+    public List<OrderDto> getUserOrders(Integer userId){
+        List<Order> orders =  orderRepository.findByUserId(userId);
+        return orders.stream().map(this::convertToDto).toList();
     }
 
     private Order createOrder(Cart cart){
         Order order = new Order();
         // set the user
+        order.setUser(cart.getUser());
         order.setOrderStatus(OrderStatus.PENDING);
         order.setOrderDate(LocalDate.now());
         return order;
@@ -72,5 +80,10 @@ public class OrderService implements IOrderService {
        return orderItemList.stream()
                .map(item -> item.getPricePerUnit().multiply(new BigDecimal(item.getQuantity())))
                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public OrderDto convertToDto(Order order){
+        return modelMapper.map(order, OrderDto.class);
     }
 }
