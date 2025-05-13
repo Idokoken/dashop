@@ -27,12 +27,13 @@ public class JwtUtils {
                             .map(GrantedAuthority::getAuthority).toList();
 
         return Jwts.builder()
-                .setSubject(userPrinciple.getEmail())
+                .setSubject(userPrinciple.getUsername())
                 .claim("id", userPrinciple.getId())
                 .claim("roles", roles)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + expirationTime))
-                .signWith(key(), SignatureAlgorithm.HS256).compact();
+                .signWith(key(), SignatureAlgorithm.HS256)
+                .compact();
 
     }
 

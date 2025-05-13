@@ -1,0 +1,1 @@
+--SET GLOBAL sql_require_primary_key = OFF;

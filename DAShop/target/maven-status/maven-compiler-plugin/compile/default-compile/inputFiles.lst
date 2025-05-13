@@ -19,6 +19,8 @@ C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\dto\ProductDto.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\dto\UserDto.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\enums\OrderStatus.java
+C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\events\RegistrationCompleteEvent.java
+C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\events\RegistrationCompleteEventListener.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\exception\AlreadyExistException.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\exception\GlobalExceptionHandler.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\exception\ProductNotFoundException.java
@@ -32,8 +34,8 @@ C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\model\OrderItem.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\model\Product.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\model\Review.java
-C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\model\Role.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\model\User.java
+C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\model\VerificationToken.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\repository\CartItemRepository.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\repository\CartRepository.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\repository\CategoryRepository.java
@@ -41,8 +43,8 @@ C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\repository\OrderItemRepository.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\repository\OrderRepository.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\repository\ProductRepository.java
-C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\repository\RoleRepository.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\repository\UserRepository.java
+C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\repository\VerificationTokenRepository.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\request\AddProductRequest.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\request\CreateUserRequest.java
 C:\Users\User\Documents\kenneth\project\dashop-app\DAShop\src\main\java\ndgroups\DAShop\request\LoginRequest.java

@@ -6,6 +6,7 @@ import ndgroups.DAShop.request.CreateUserRequest;
 import ndgroups.DAShop.request.UpdateUserRequest;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IUserService {
     User getUserById(Integer userId);
@@ -17,5 +18,10 @@ public interface IUserService {
     UserDto convertUserToDto(User user);
 
     User getAuthenticatedUser();
+
+    User registerUser(CreateUserRequest request);
+    Optional<User> findByEmail(String email);
+    void saveUserVerificationToken(User user, String verificationToken);
+    String validateToken(String theToken);
 
 }

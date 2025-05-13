@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,19 +20,19 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class CustomUserDetails implements UserDetails {
     private Integer id;
-    private String email;
+    private String username;
     private String password;
-    private Collection<GrantedAuthority>authorities;
+    private boolean isEnabled;
+    private List<GrantedAuthority> authorities;
 
 
-    public static CustomUserDetails buildUserDetails(User user){
-        List<GrantedAuthority>authorities = user.getRoles()
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+    public CustomUserDetails(User user){
+        this.username = user.getEmail();
+        this.password = user.getPassword();
+        this.isEnabled = user.isEnabled();
+        this.authorities = Arrays.stream(user.getRole().split(","))
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-        return new CustomUserDetails(
-                user.getId(), user.getEmail(), user.getPassword(), authorities
-        );
     }
 
 
@@ -47,7 +48,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
@@ -69,4 +70,6 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+
+
 }
