@@ -5,6 +5,7 @@ import ndgroups.DAShop.exception.ResourceNotFoundException;
 import ndgroups.DAShop.model.Cart;
 import ndgroups.DAShop.model.User;
 import ndgroups.DAShop.response.ApiResponse;
+import ndgroups.DAShop.service.Interface.IAuthService;
 import ndgroups.DAShop.service.Interface.ICartItemService;
 import ndgroups.DAShop.service.Interface.ICartService;
 import ndgroups.DAShop.service.Interface.IUserService;
@@ -23,13 +24,15 @@ public class CartItemController {
     private ICartService cartService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IAuthService authService;
 
 
     @PostMapping("/item/add")
     public ResponseEntity<ApiResponse>addItemToCart(@RequestParam Integer productId,
                                                     @RequestParam Integer quantity) {
         try {
-            User user = userService.getAuthenticatedUser();
+            User user = authService.getAuthenticatedUser();
             Cart cart = cartService.initializeNewCart(user);
 
             cartItemService.addItemToCart(cart.getId(), productId, quantity);

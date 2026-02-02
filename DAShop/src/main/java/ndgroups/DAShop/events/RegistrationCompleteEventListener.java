@@ -5,7 +5,9 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ndgroups.DAShop.model.User;
+import ndgroups.DAShop.service.Interface.IAuthService;
 import ndgroups.DAShop.service.impl.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -21,6 +23,9 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
     private final UserService userService;
     private final JavaMailSender mailSender;
     private User theUser;
+    @Autowired
+    private IAuthService authService;
+
     @Override
     public void onApplicationEvent(RegistrationCompleteEvent event) {
         //1. get the newly registered user
@@ -28,7 +33,7 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
         //2. create a verification token for the user
         String verificationToken  = UUID.randomUUID().toString();
         //3. save the verification token for the user
-        userService.saveUserVerificationToken(theUser, verificationToken);
+        authService.saveUserVerificationToken(theUser, verificationToken);
         //4. build the verification url to be sent to the user
         String url  =  event.getApplicationUrl() + "/register/verifyEmail?token=" + verificationToken;
         //5. send the email

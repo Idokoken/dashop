@@ -14,6 +14,7 @@ import ndgroups.DAShop.response.ApiResponse;
 import ndgroups.DAShop.security.CustomUserDetails;
 import ndgroups.DAShop.security.jwt.JwtResponse;
 import ndgroups.DAShop.security.jwt.JwtUtils;
+import ndgroups.DAShop.service.Interface.IAuthService;
 import ndgroups.DAShop.service.Interface.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,8 +29,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/auth")
+@RequestMapping("/auth")
 public class AuthController {
+    @Autowired
+    private IAuthService authService;
     @Autowired
     private IUserService userService;
     @Autowired
@@ -55,11 +58,11 @@ public class AuthController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<ApiResponse> registerUser(@RequestBody CreateUserRequest registrationRequest,
                                                     final HttpServletRequest request) {
         try {
-            User user =  userService.registerUser(registrationRequest);
+            User user =  authService.registerUser(registrationRequest);
             //publish an event to the user
             publisher.publishEvent(new RegistrationCompleteEvent(user, applicationUrl(request)));
             return ResponseEntity.status(HttpStatus.OK)
@@ -81,7 +84,7 @@ public class AuthController {
         if(theToken.getUser().isEnabled()){
             return "This account has already been verified, Please login.";
         }
-        String verificationResult = userService.validateToken(token);
+        String verificationResult = authService.validateToken(token);
         if(verificationResult.equalsIgnoreCase("valid")){
             return "Email verified successfully. Now you can login into your account";
         }

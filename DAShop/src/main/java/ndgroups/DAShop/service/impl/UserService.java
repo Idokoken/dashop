@@ -81,57 +81,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-
-        Optional<User> optUser = userRepository.findByEmail(email);
-        return optUser.get();
-
-    }
-
-
-    @Override
-    public User registerUser(CreateUserRequest request) {
-        Optional<User> user = userRepository.findByEmail(request.getEmail());
-        if(user.isPresent()){
-            throw new AlreadyExistException(
-                    "user with email address " + request.getEmail() + " already exist");
-        }
-        var newUser =  new User();
-        newUser.setFirstName(request.getFirstName());
-        newUser.setLastName(request.getLastName());
-        newUser.setEmail(request.getEmail());
-        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
-        newUser.setRole(request.getRole());
-        return userRepository.save(newUser);
-    }
-
-    @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
-    }
-
-    @Override
-    public void saveUserVerificationToken(User user, String token) {
-        var verificationToken = new VerificationToken(token, user);
-        tokenRepository.save(verificationToken);
-    }
-    @Override
-    public String validateToken(String theToken) {
-        VerificationToken token  = tokenRepository.findByToken(theToken);
-        if(token  == null) {
-            return "Invalid verification token";
-        }
-        User user = token.getUser();
-        Calendar calendar = Calendar.getInstance();
-        if((token.getTokenExpirationTime().getTime() - calendar.getTime().getTime()) <= 0) {
-            tokenRepository.delete(token);
-            return "token already expired";
-        }
-        user.setEnabled(true);
-        userRepository.save(user);
-        return "valid";
     }
 
 
