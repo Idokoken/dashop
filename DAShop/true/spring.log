@@ -1,4 +1,6 @@
-2026-02-02T03:34:58.300+01:00  WARN 20820 --- [DAShop] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5h44m28s481ms955µs100ns).
-2026-02-02T04:39:11.077+01:00  INFO 20820 --- [DAShop] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-02-02T04:39:13.007+01:00  INFO 20820 --- [DAShop] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2026-02-02T04:39:13.464+01:00  INFO 20820 --- [DAShop] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-02-03T02:27:52.553+01:00  INFO 14608 --- [DAShop] [restartedMain] ndgroups.DAShop.DaShopApplication        : Starting DaShopApplication using Java 18.0.1.1 with PID 14608 (C:\Users\USXER\Documents\projects\dashop\DAShop\target\classes started by USXER in C:\Users\USXER\Documents\projects\dashop\DAShop)
+2026-02-03T02:27:52.576+01:00  INFO 14608 --- [DAShop] [restartedMain] ndgroups.DAShop.DaShopApplication        : No active profile set, falling back to 1 default profile: "default"
+2026-02-03T02:27:53.122+01:00  INFO 14608 --- [DAShop] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-02-03T02:27:53.122+01:00  INFO 14608 --- [DAShop] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-02-03T02:28:02.716+01:00  INFO 14608 --- [DAShop] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-03T02:28:03.542+01:00  INFO 14608 --- [DAShop] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 793 ms. Found 9 JPA repository interfaces.
