@@ -1,6 +1,8 @@
 package ndgroups.DAShop.service.impl;
 
+import jakarta.transaction.Transactional;
 import ndgroups.DAShop.exception.AlreadyExistException;
+import ndgroups.DAShop.response.CloudinaryUploadResponse;
 import ndgroups.DAShop.service.Interface.IProductService;
 import ndgroups.DAShop.dto.ImageDto;
 import ndgroups.DAShop.dto.ProductDto;
@@ -16,7 +18,9 @@ import ndgroups.DAShop.request.UpdateProductRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,15 +34,19 @@ public class ProductService implements IProductService {
       private ImageRepository imageRepository;
       @Autowired
       private ModelMapper modelMapper;
+      @Autowired
+      private CloudinaryService cloudinaryService;
+
+
       @Override
       public Product addProduct(AddProductRequest product){
           if(productExists(product.getName(), product.getBrand())){
-              throw new AlreadyExistException(product.getBrand() + " " + product.getName() + " already exist, " +
-                      "you may update the product instead!");
+              throw new AlreadyExistException(product.getBrand() + " " + product.getName() +
+                      " already exist, you may update the product instead!");
           }
 
-            Category category = Optional.ofNullable(categoryRepository.findByName(product.getCategory().getName()))
-                    .orElseGet(() -> {
+            Category category = Optional.ofNullable(categoryRepository.findByName(
+                    product.getCategory().getName())).orElseGet(() -> {
                           Category newCategory = new Category(product.getCategory().getName());
                           return categoryRepository.save(newCategory);
                     });
@@ -48,16 +56,47 @@ public class ProductService implements IProductService {
       private boolean productExists(String name, String brand){
           return productRepository.existsByNameAndBrand(name, brand);
       }
-
+      @Transactional
       private Product createProduct(AddProductRequest request, Category category){
-            return new Product(request.getName(),
-                    request.getDescription(),
-                    request.getPrice(),
-                    request.getStockQuantity(),
-                    request.getBrand(),
-                    request.getSKU(),
-                    category
-                    );
+          Product product = new Product();
+
+          List<Image> imageList = new ArrayList<>();
+          if (request.getImages() != null) {
+              int index = 0;
+              for (MultipartFile file : request.getImages()) {
+                  CloudinaryUploadResponse response =
+                          cloudinaryService.upload(file);
+                  Image image = Image.builder()
+                          .product(product)
+                          .imageUrl(response.getUrl())
+                          .publicId(response.getPublicId())
+                          .featured(index == 0)
+                          .displayOrder(index)
+                          .build();
+                  imageList.add(image);
+                  index++;
+              }
+          }
+          product.setImages(imageList);
+          product.setName(request.getName());
+          product.setDescription(request.getDescription());
+          product.setPrice(request.getPrice());
+          product.setStockQuantity(request.getStockQuantity());
+          product.setBrand(request.getBrand());
+          product.setSKU(request.getSKU());
+          product.setCategory(category);
+
+          return product;
+
+
+//            return new Product(request.getName(),
+//                    request.getDescription(),
+//                    request.getPrice(),
+//                    request.getStockQuantity(),
+//                    request.getBrand(),
+//                    request.getSKU(),
+//                    category
+//                    );
       }
 
       @Override
@@ -86,13 +125,20 @@ public class ProductService implements IProductService {
                 return existingProduct;
 
     }
+      @Transactional
       @Override
       public void deleteProduct(Integer id){
            if(!productRepository.existsById(id)){
                  throw new ResourceNotFoundException("product not found with id: " + id);
            }
+           Product product = productRepository.findById(id).get();
+          for (Image image : product.getImages()) {
+              cloudinaryService.delete(image.getPublicId());
+          }
+
            productRepository.deleteById(id);
       }
+
       @Override
       public List<Product> getAllProducts(){
             return productRepository.findAll();

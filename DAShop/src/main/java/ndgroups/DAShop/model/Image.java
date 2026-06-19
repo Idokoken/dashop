@@ -2,18 +2,18 @@ package ndgroups.DAShop.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Blob;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
+@Builder
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,12 @@ public class Image {
     @Lob
     @JsonIgnore
     private Blob image;
-    private String downloadUrl;
+    private String imageUrl;
+    private String publicId;
+    private Boolean featured;
+    private Integer displayOrder;
+    @CreationTimestamp
+    private LocalDateTime uploadedAt;
     @JsonIgnore
     @ManyToOne
 //    @JoinColumn(name = "product_id")

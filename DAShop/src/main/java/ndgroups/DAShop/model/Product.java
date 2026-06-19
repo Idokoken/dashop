@@ -34,7 +34,8 @@ public class Product {
     private List<Image> images;
 
 
-    public Product(String name, String description, BigDecimal price, Integer stockQuantity, String brand, String SKU, Category category) {
+    public Product(String name, String description, BigDecimal price, Integer stockQuantity,
+                   String brand, String SKU, Category category) {
         this.name = name;
         this.description = description;
         this.price = price;
